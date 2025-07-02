@@ -83,12 +83,14 @@ fn main() {
         let local: DateTime<Local> = now.into();
 
         let (_, hours_) = local.hour12();
-        let hours = hours_ % 12;
-        let minutes = local.minute();
+        let minutes_ = local.minute();
+        let seconds_ = local.second();
+        let hours = (hours_ % 12) as f32 + (minutes_ as f32 / 60.0);
+        let minutes = minutes_ as f32 + (seconds_ as f32 / 60.0);
 
         let mut pixels: Vec<(u8, u8)> = CIRCLE.to_vec();
-        get_line(8, 8, hours as f32 * HOUR_ANGLE_FACTOR, 2.8, &mut pixels);
-        get_line(8, 8, minutes as f32 * MINUTE_ANGLE_FACTOR, 4.8, &mut pixels);
+        get_line(8, 8, hours * HOUR_ANGLE_FACTOR, 2.8, &mut pixels);
+        get_line(8, 8, minutes * MINUTE_ANGLE_FACTOR, 4.8, &mut pixels);
 
         let mut char_grid: Vec<Vec<char>> = vec![vec![' '; 8]; 16];
 
